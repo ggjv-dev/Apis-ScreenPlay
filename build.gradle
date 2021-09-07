@@ -1,0 +1,112 @@
+group 'Gabriel'
+version '1.0-SNAPSHOT'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenLocal()
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.0")
+    }
+}
+
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+apply plugin: 'net.serenity-bdd.aggregator'
+apply plugin: 'java-library'
+apply plugin: 'jacoco'
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+
+dependencies {
+    compile 'net.serenity-bdd:serenity-cucumber:1.9.5'
+    compile group: 'net.serenity-bdd', name: 'serenity-screenplay-rest', version: '2.1.6'
+    compile 'net.serenity-bdd:serenity-screenplay:1.9.9'
+    compile group: 'net.serenity-bdd', name: 'serenity-report-resources', version: '1.0.28'
+    // https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java
+    compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.3.1'
+
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
+    testCompile group: 'junit', name: 'junit', version: '4.13'
+
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+    compile group: 'org.apache.axis', name: 'axis', version: '1.4'
+    compile group: 'com.sixdimensions.commons.osgi.wrapper', name: 'jaxrpc-api', version: '1.1'
+    compile group: 'com.github.detro.ghostdriver', name: 'phantomjsdriver', version: '1.0.1'
+    compile group: 'org.apache.poi', name: 'poi', version: '4.0.1'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.0.1'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+    compile group: 'javax.activation', name: 'activation', version: '1.1'
+    compile group: 'javax.mail', name: 'mail', version: '1.4'
+    compile group: 'com.jcraft', name: 'jsch', version: '0.1.44-1'
+    compile group: 'net.serenity-bdd', name: 'serenity-core', version: '2.0.52'
+    compile group: 'net.serenity-bdd', name: 'serenity-junit', version: '2.0.52'
+    compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.2.0'
+    compile group: 'org.apache.cxf', name: 'cxf-rt-ws-security', version: '3.2.0'
+    compile group: 'org.apache.cxf', name: 'cxf-core', version: '3.2.0'
+    compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.2.0'
+
+    compile group: 'org.json', name: 'json', version: '20180813'
+    compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.2.0'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    compile group: 'com.opencsv', name: 'opencsv', version: '4.0'
+
+
+    compile group: 'net.sf.jt400', name: 'jt400', version: '6.6'
+    compile group: 'com.github.noraui', name: 'ojdbc8', version: '12.2.0.1'
+    testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.3.0'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
+    compile 'org.apache.logging.log4j:log4j-core:2.12.1'
+    testCompile('junit:junit:4.13')
+
+    jacoco {
+        toolVersion = "0.8.5"
+        reportsDir = file("$buildDir/customJacocoReportDir")
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.destination file("${buildDir}/jacocoHtml")
+        }
+    }
+
+    test {
+        useJUnit {
+            //include "**/*EjecutarProyecto*"
+            gradle.startParameter.continueOnFailure = true
+            testLogging.showStandardStreams = true
+            systemProperties System.getProperties()
+        }
+
+        jacoco {
+            destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+            classDumpDir = file("$buildDir/jacoco/classpathdumps")
+        }
+    }
+
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                limit {
+                    minimum = 0.5
+                }
+            }
+        }
+    }
+}
