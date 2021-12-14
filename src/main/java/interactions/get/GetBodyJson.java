@@ -1,26 +1,30 @@
-package interactions;
+package interactions.get;
 
 import io.restassured.http.ContentType;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.rest.interactions.RestInteraction;
-import net.thucydides.core.annotations.Step;
 
-public class PostStatusVerification extends RestInteraction {
-    private String resource;
+import java.util.Map;
+
+public class GetBodyJson extends RestInteraction {
+
+    private String url;
     private String body;
+    private Map<String, Object> headers;
 
-    public PostStatusVerification(String resource, String body) {
-        this.resource = resource;
+    public GetBodyJson(String url, String body, Map<String, Object> headers) {
+        this.url = url;
         this.body = body;
+        this.headers = headers;
     }
 
-    @Step("{0} executes a POST on the resource #resource")
     @Override
     public <T extends Actor> void performAs(T actor) {
         rest().contentType(ContentType.JSON)
                 .relaxedHTTPSValidation()
+                .headers(headers)
                 .body(body)
-                .when().post(resource)
-                .then().statusCode(200);
+                .when()
+                .get(url);
     }
 }

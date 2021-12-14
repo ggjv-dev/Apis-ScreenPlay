@@ -1,29 +1,30 @@
-package interactions;
+package interactions.post;
 
 import io.restassured.http.ContentType;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.rest.interactions.RestInteraction;
-import net.thucydides.core.annotations.Step;
 
 import java.util.Map;
 
-public class GetWithHeader extends RestInteraction {
+public class PostBodyTxt extends RestInteraction {
 
+    private String url;
+    private String body;
     private Map<String, Object> headers;
-    private String resource;
 
-    public GetWithHeader(String resource, Map<String, Object> headers) {
+    public PostBodyTxt(String url, String body, Map<String, Object> headers) {
+        this.url = url;
+        this.body = body;
         this.headers = headers;
-        this.resource = resource;
     }
 
-    @Step("{0} executes a GET on the resource #resource")
     @Override
     public <T extends Actor> void performAs(T actor) {
-        rest().contentType(ContentType.JSON)
+        rest().contentType(ContentType.TEXT)
                 .relaxedHTTPSValidation()
                 .headers(headers)
+                .body(body)
                 .when()
-                .get(resource);
+                .post(url);
     }
 }

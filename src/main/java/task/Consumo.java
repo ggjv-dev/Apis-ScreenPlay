@@ -11,65 +11,144 @@ import java.util.Map;
 public class Consumo implements Task {
 
     String metodo, url, body;
-    String []pathFile,nameKeys;
-    Map<String, String> headers;
-    public Consumo(String metodo, String url, Map<String, String> headers, String body,  String [] pathFile, String []  nameKeys) {
+    Map<String, Object> headers;
+    Map<String, Object> params;
+
+    public Consumo(String metodo, String url, Map<String, Object> headers, String body, Map<String, Object> params) {
         this.metodo = metodo;
         this.body = body;
         this.url = url;
         this.headers = headers;
-        this.pathFile=pathFile;
-        this.nameKeys=nameKeys;
+        this.params = params;
     }
-    public static Consumo elApi(String metodo, String url, Map<String, String> headers, String body,String [] pathFile,String [] nameKeys) {
-        return Tasks.instrumented(Consumo.class, metodo, url, headers, body,pathFile,nameKeys);
+
+    public static Consumo elApi(String metodo, String url, Map<String, Object> headers, String body, Map<String, Object> params) {
+        return Tasks.instrumented(Consumo.class, metodo, url, headers, body, params);
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-            switch(metodo){
-                case "POST":
-                    actor.attemptsTo(
-                        Servicio.restPost(url,body,headers)
-                    );
-                    break;
-                case "DELETE":
-                    actor.attemptsTo(
-                            Servicio.restDelete(url,body,headers)
-                    );
-                    break;
-                case "GET":
-                    actor.attemptsTo(
-                            Servicio.restGet(url,headers)
-                    );
-                    break;
-                case "GET-PARAMS":
-                    Map<String, String> params= new HashMap<>();
-                    for (String pair : body.split(",")) {
-                        String[] entry = pair.split(":");
-                        if(entry[1].trim().equals("vacio"))
-                            params.put(entry[0].trim(), "  ");
-                        else
-                            params.put(entry[0].trim(), entry[1].trim());
-                    }
-                    actor.attemptsTo(
-                            Servicio.restGetParams(url,headers,params)
-                    );
-                    break;
-                case "PUT":
-                    actor.attemptsTo(
-                            Servicio.restPut(url,body,headers)
-                    );
-                    break;
-                case "POSTWITHBODYPARAMETERS":
-                    actor.attemptsTo(
-                            Servicio.restPostNew(url,body,headers,pathFile,nameKeys)
-                    );
-                    break;
-                case "TOKEN":
-                    actor.attemptsTo(
-                            Servicio.restToken()
-                    );
-            }
+        switch (metodo) {
+            /*
+                    GET
+             */
+            case "Get":
+                actor.attemptsTo(Servicio.get(url,headers));
+                break;
+            case "GetBodyHtml":
+                actor.attemptsTo(Servicio.getBodyHtml(url,body,headers));
+                break;
+            case "GetBodyJS":
+                actor.attemptsTo(Servicio.getBodyJS(url,body,headers));
+                break;
+            case "GetBodyJson":
+                actor.attemptsTo(Servicio.getBodyJson(url,body,headers));
+                break;
+            case "GetBodyTxt":
+                actor.attemptsTo(Servicio.getBodyTxt(url,body,headers));
+                break;
+            case "GetBodyXml":
+                actor.attemptsTo(Servicio.getBodyXml(url,body,headers));
+                break;
+            case "GetFormData":
+                actor.attemptsTo(Servicio.getFormData(url,params,headers));
+                break;
+            case "GetQueryParams":
+                actor.attemptsTo(Servicio.getQueryParams(url,params,headers));
+                break;
+            case "GetUrlEncoded":
+                actor.attemptsTo(Servicio.getUrlEncoded(url,params,headers));
+                break;
+            /*
+                    POST
+             */
+            case "Post":
+                actor.attemptsTo(Servicio.post(url,headers));
+                break;
+            case "PostBodyHtml":
+                actor.attemptsTo(Servicio.postBodyHtml(url,body,headers));
+                break;
+            case "PostBodyJS":
+                actor.attemptsTo(Servicio.postBodyJS(url,body,headers));
+                break;
+            case "PostBodyJson":
+                actor.attemptsTo(Servicio.postBodyJson(url,body,headers));
+                break;
+            case "PostBodyTxt":
+                actor.attemptsTo(Servicio.postBodyTxt(url,body,headers));
+                break;
+            case "PostBodyXml":
+                actor.attemptsTo(Servicio.postBodyXml(url,body,headers));
+                break;
+            case "PostFormData":
+                actor.attemptsTo(Servicio.postFormData(url,params,headers));
+                break;
+            case "PostQueryParams":
+                actor.attemptsTo(Servicio.postQueryParams(url,params,headers));
+                break;
+            case "PostUrlEncoded":
+                actor.attemptsTo(Servicio.postUrlEncoded(url,params,headers));
+                break;
+            /*
+                    DELETE
+             */
+            case "Delete":
+                actor.attemptsTo(Servicio.delete(url,headers));
+                break;
+            case "DeleteBodyHtml":
+                actor.attemptsTo(Servicio.deleteBodyHtml(url,body,headers));
+                break;
+            case "DeleteBodyJS":
+                actor.attemptsTo(Servicio.deleteBodyJS(url,body,headers));
+                break;
+            case "DeleteBodyJson":
+                actor.attemptsTo(Servicio.deleteBodyJson(url,body,headers));
+                break;
+            case "DeleteBodyTxt":
+                actor.attemptsTo(Servicio.deleteBodyTxt(url,body,headers));
+                break;
+            case "DeleteBodyXml":
+                actor.attemptsTo(Servicio.deleteBodyXml(url,body,headers));
+                break;
+            case "DeleteFormData":
+                actor.attemptsTo(Servicio.deleteFormData(url,params,headers));
+                break;
+            case "DeleteQueryParams":
+                actor.attemptsTo(Servicio.deleteQueryParams(url,params,headers));
+                break;
+            case "DeleteUrlEncoded":
+                actor.attemptsTo(Servicio.deleteUrlEncoded(url,params,headers));
+                break;
+            /*
+                    PUT
+             */
+            case "Put":
+                actor.attemptsTo(Servicio.put(url,headers));
+                break;
+            case "PutBodyHtml":
+                actor.attemptsTo(Servicio.putBodyHtml(url,body,headers));
+                break;
+            case "PutBodyJS":
+                actor.attemptsTo(Servicio.putBodyJS(url,body,headers));
+                break;
+            case "PutBodyJson":
+                actor.attemptsTo(Servicio.putBodyJson(url,body,headers));
+                break;
+            case "PutBodyTxt":
+                actor.attemptsTo(Servicio.putBodyTxt(url,body,headers));
+                break;
+            case "PutBodyXml":
+                actor.attemptsTo(Servicio.putBodyXml(url,body,headers));
+                break;
+            case "PutFormData":
+                actor.attemptsTo(Servicio.putFormData(url,params,headers));
+                break;
+            case "PutQueryParams":
+                actor.attemptsTo(Servicio.putQueryParams(url,params,headers));
+                break;
+            case "PutUrlEncoded":
+                actor.attemptsTo(Servicio.putUrlEncoded(url,params,headers));
+                break;
+        }
     }
 }

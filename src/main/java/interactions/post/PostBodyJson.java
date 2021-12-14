@@ -1,4 +1,4 @@
-package interactions;
+package interactions.post;
 
 import io.restassured.http.ContentType;
 import net.serenitybdd.screenplay.Actor;
@@ -6,23 +6,25 @@ import net.serenitybdd.screenplay.rest.interactions.RestInteraction;
 
 import java.util.Map;
 
-public class GetParams extends RestInteraction {
+public class PostBodyJson extends RestInteraction {
 
-    public GetParams(String resource, Map<String, Object> headers, Map<String, Object> params) {
-        this.resource = resource;
+    private String url;
+    private String body;
+    private Map<String, Object> headers;
+
+    public PostBodyJson(String url, String body, Map<String, Object> headers) {
+        this.url = url;
+        this.body = body;
         this.headers = headers;
-        this.params = params;
     }
 
-    private String resource;
-    private Map<String, Object> headers;
-    private Map<String, Object> params;
     @Override
     public <T extends Actor> void performAs(T actor) {
         rest().contentType(ContentType.JSON)
                 .relaxedHTTPSValidation()
                 .headers(headers)
+                .body(body)
                 .when()
-                .get(resource,params);
+                .post(url);
     }
 }
