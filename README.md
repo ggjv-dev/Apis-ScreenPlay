@@ -17,5 +17,9 @@ Framework basado en el patron ScreenPlay desarrollado con java 8 y gradle, dise√
   
   > Se debe reemplzar 'NombreTag' por el nombre del tag que desee ejecutar
 
+## Metodos permitidos:
+
+![alt text](https://github.com/ggjv-dev/Apis-ScreenPlay/blob/main/images/metodosFramework.png)
+
 * * *
 <div style="text-align: right"> Gabriel Gabriel Jim√©nez Vergara </div>
