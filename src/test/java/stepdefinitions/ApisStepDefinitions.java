@@ -74,7 +74,7 @@ public class ApisStepDefinitions extends PageObject {
         }
 
         //Consumir API
-        OnStage.theActorCalled("Operador/ambos").wasAbleTo(
+        OnStage.theActorCalled("Gabriel").wasAbleTo(
                 Consumo.elApi(metodo, url, headers, body, params));
     }
 
